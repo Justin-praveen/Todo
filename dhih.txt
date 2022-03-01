@@ -1,0 +1,100 @@
+rout.get("/udata",async(req,res)=>{
+  const hu = await use.find();
+  res.json(hu);
+})
+
+rout.post("/log",async(req,res)=>{
+    use.findOne({email : req.body.email},(err,data)=>{
+
+        if(data.password == req.body.password){
+            res.json(`${data.uname} Done!`);
+        }
+        else{
+            res.json("password not match...!");
+        }
+    })
+
+})
+
+rout.post("/reg",async(req,res)=>{
+    const reg = new use({
+        uname : req.body.uname,
+        email : req.body.email,
+        password : req.body.password
+    })
+
+    await reg.save();
+    res.json("Done!");
+})
+
+rout.post("/post",async(req,res)=>{
+    const post = new used({
+        uname : req.body.uname,
+        title :req.body.title,
+        text : req.body.text
+    })
+
+    await post.save();
+    res.json("Done!");
+
+
+})
+
+rout.post("/t",(req,res)=>{
+    res.json("Done!")
+})
+
+
+rout.post("/da",async(req,res)=>{
+
+    const f = {uname : req.body.uname};
+
+    const da =await used.find(f);
+    
+    res.json(da)
+
+})
+
+/////////////////////////////////////////////////////
+
+ const [uname,setuname] = useState("")
+  const [file,setfile] = useState("");
+
+  const fil = e =>{
+    setfile(e.target.files[0]);
+  }
+ 
+  const Sub = async(e)=>{
+    e.preventDefault();
+    
+
+    await axios.post("http://localhost:7070/profile",{uname:uname,file:file}).then((da)=>{
+      console.log(da)
+
+    }).catch((err)=>{
+console.log(err)
+
+console.log(file,uname)
+    })
+
+  
+       await axios.post("http://localhost:7070/s",{n : "justin"}).then((da)=>{
+      console.log("done")
+    })
+    
+
+  }
+
+
+  return (
+    <div>
+
+<form onSubmit={Sub} encType="multipart/form-data">
+        <input type="text" onChange={(e)=> setuname(e.target.value)}/>
+
+        <input type="file" filename="file" onChange={fil}/>
+        <button type="submit">submit</button>
+      </form>
+    </div>
+  )
+}
