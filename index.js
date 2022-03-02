@@ -1,23 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import Store from "./Store/redux";
-import {Provider} from "react-redux"
+const express = require("express");
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const rout = require("./Rout");
+const cors = require("cors")
+const url = "mongodb://localhost:27017/todo";
+
+mongoose.connect(url).then(()=>{
+    console.log("connected db");
+})
+ 
+const app = express();
+
+app.use(express.json());
+app.use("/img",express.static("./photos"))
+
+app.use(morgan("dev"));
+app.use(cors())
+app.use("/",rout);
 
 
-ReactDOM.render(
-  <>
-  <Provider store={Store}>
-    <App />
-  </Provider>
-    
-  </>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+app.listen(7070,()=> console.log("connected"))
